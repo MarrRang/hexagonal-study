@@ -1,7 +1,7 @@
 package com.example.hexagonal.something.application.service;
 
-import com.example.hexagonal.something.adapter.out.persistence.CalculateRepositoryAdapter;
 import com.example.hexagonal.something.application.port.in.CalculateUseCase;
+import com.example.hexagonal.something.application.port.out.CalculateOutPort;
 import com.example.hexagonal.something.domain.CalculateLog;
 import org.springframework.stereotype.Service;
 
@@ -9,33 +9,17 @@ import java.util.List;
 
 @Service
 public class CalculateService implements CalculateUseCase {
-	private final CalculateRepositoryAdapter calculateRepositoryAdapter;
+	private final CalculateOutPort calculateOutPort;
 
-	public CalculateService(CalculateRepositoryAdapter calculateRepositoryAdapter) {
-		this.calculateRepositoryAdapter = calculateRepositoryAdapter;
-	}
-
-	public int add(int x, int y) {
-		return x + y;
-	}
-
-	public int subtract(int x, int y) {
-		return x - y;
-	}
-
-	public int multiply(int x, int y) {
-		return x * y;
-	}
-
-	public int divide(int x, int y) {
-		return x / y;
+	public CalculateService(CalculateOutPort calculateOutPort) {
+		this.calculateOutPort = calculateOutPort;
 	}
 
 	public CalculateLog getCalculateLog(int id) {
-		return calculateRepositoryAdapter.findById(id).orElse(null);
+		return calculateOutPort.getCalculateLog(id);
 	}
 
 	public List<CalculateLog> getAllCalculateLog() {
-		return calculateRepositoryAdapter.findAll();
+		return calculateOutPort.getAllCalculateLog();
 	}
 }
